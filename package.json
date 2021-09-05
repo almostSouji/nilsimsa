@@ -1,0 +1,40 @@
+{
+  "name": "nilsimsa",
+  "version": "0.1.0",
+  "description": "",
+  "contributors": [
+    "Souji <timoqueezle@gmail.com>"
+  ],
+  "private": true,
+  "scripts": {
+    "build": "rimraf dist && tsc",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
+    "prettier": "prettier --write **/*.{ts}",
+    "test": "jest --passWithNoTests",
+    "test:ci": "jest --no-stack-trace --verbose --passWithNoTests"
+  },
+  "engines": {
+    "node": ">=16.6.0"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^13.1.0",
+    "@commitlint/config-angular": "^13.1.0",
+    "@types/jest": "^27.0.1",
+    "@types/node": "^16.7.10",
+    "@typescript-eslint/eslint-plugin": "^4.30.0",
+    "@typescript-eslint/parser": "^4.30.0",
+    "eslint": "^7.32.0",
+    "eslint-config-marine": "^9.0.6",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-tsdoc": "^0.2.14",
+    "husky": "^7.0.2",
+    "jest": "^27.1.0",
+    "lint-staged": "^11.1.2",
+    "prettier": "^2.3.2",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^27.0.5",
+    "typescript": "^4.4.2"
+  }
+}
