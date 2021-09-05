@@ -44,7 +44,7 @@ test("short 1 (hex)", () => {
 });
 
 test("short 2 (hex)", () => {
-  expect(hexDigest(Buffer.from("a"))).toBe(
+  expect(hexDigest(Buffer.from("aa"))).toBe(
     "0000000000000000000000000000000000000000000000000000000000000000"
   );
 });
