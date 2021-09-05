@@ -6,6 +6,8 @@
     "Souji <timoqueezle@gmail.com>"
   ],
   "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "rimraf dist && tsc",
     "lint": "eslint src --ext .ts",
