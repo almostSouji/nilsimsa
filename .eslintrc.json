@@ -5,6 +5,8 @@
 	},
 	"rules": {
 		"@typescript-eslint/naming-convention": 0,
+		"@typescript-eslint/no-unused-vars": 0,
+		"no-redeclare": 0,
 		"no-console": 1
 	},
 	"plugins": [

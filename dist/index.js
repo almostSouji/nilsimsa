@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.compareHexDigests = exports.compareDigests = exports.hexDigest = exports.digest = void 0;
+exports.compare = exports.digest = void 0;
 const TRAN = [
     0x02, 0xd6, 0x9e, 0x6f, 0xf9, 0x1d, 0x04, 0xab, 0xd0, 0x22, 0x16, 0x1f, 0xd8,
     0x73, 0xa1, 0xac, 0x3b, 0x70, 0x62, 0x96, 0x1e, 0x6e, 0x8f, 0x39, 0x9d, 0x05,
@@ -55,12 +55,9 @@ function tran53(a, b, c, n) {
         TRAN[(0xff & c) ^ TRAN[n]]) &
         0xff);
 }
-/**
- * Compute a nilsimsa digest for the provided buffer
- * @param input - The buffer to compute a digest for
- * @returns Byte digest
- */
-function digest(input) {
+function digest(input, raw) {
+    if (typeof input === 'string')
+        input = Buffer.from(input);
     const acc = Array(256).fill(0);
     let window = [];
     for (let offset = 0; offset < input.length; offset++) {
@@ -100,35 +97,21 @@ function digest(input) {
             digest[i >> 3] += 1 << (i & 7);
         }
     }
-    return digest.reverse();
+    const rev = digest.reverse();
+    return raw ? rev : toHexString(rev);
 }
 exports.digest = digest;
 /**
- * Compute a nilsimsa digest hex for the provided buffer
- * @param input - The buffer to compute a digest for
- * @returns Hexstring digest
- */
-function hexDigest(input) {
-    return toHexString(digest(input));
-}
-exports.hexDigest = hexDigest;
-/**
- * Compare two nilsimsa digest byte arrays
+ * Compare two nilsimsa digests (byte array or hex string). Values range from -128 (max difference) to 128 (max similarity)
  * @param a - The first digest to compare
  * @param b - The second digest to compare
  * @returns Distance value
  */
-function compareDigests(a, b) {
-    return compareHexDigests(toHexString(a), toHexString(b));
-}
-exports.compareDigests = compareDigests;
-/**
- * Compare two hex nilsimsa digests
- * @param a - The first digest to compare
- * @param b - The second digest to compare
- * @returns Distance value
- */
-function compareHexDigests(a, b) {
+function compare(a, b) {
+    if (a instanceof Array)
+        a = toHexString(a);
+    if (b instanceof Array)
+        b = toHexString(b);
     let bits = 0;
     for (let i = 0; i <= 62; i += 2) {
         bits +=
@@ -137,5 +120,5 @@ function compareHexDigests(a, b) {
     }
     return 128 - bits;
 }
-exports.compareHexDigests = compareHexDigests;
+exports.compare = compare;
 //# sourceMappingURL=index.js.map

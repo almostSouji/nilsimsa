@@ -60,10 +60,14 @@ function tran53(a: number, b: number, c: number, n: number) {
 
 /**
  * Compute a nilsimsa digest for the provided buffer
- * @param input - The buffer to compute a digest for
- * @returns Byte digest
+ * @param input - The buffer or string to compute a digest for
+ * @param raw - If the raw byte array should be returned
+ * @returns Computed Digest
  */
-export function digest(input: Buffer): number[] {
+export function digest(input: Buffer | string, raw: true): number[];
+export function digest(input: Buffer | string, raw?: false): string;
+export function digest(input: Buffer | string, raw?: boolean): number[] | string {
+  if (typeof input === 'string') input = Buffer.from(input);
   const acc: number[] = Array(256).fill(0);
   let window: number[] = [];
 
@@ -111,35 +115,23 @@ export function digest(input: Buffer): number[] {
     }
   }
 
-  return digest.reverse();
+  const rev = digest.reverse();
+  return raw ? rev : toHexString(rev);
 }
 
 /**
- * Compute a nilsimsa digest hex for the provided buffer
- * @param input - The buffer to compute a digest for
- * @returns Hexstring digest
- */
-export function hexDigest(input: Buffer): string {
-  return toHexString(digest(input));
-}
-
-/**
- * Compare two nilsimsa digest byte arrays
+ * Compare two nilsimsa digests (byte array or hex string). Values range from -128 (max difference) to 128 (max similarity)
  * @param a - The first digest to compare
  * @param b - The second digest to compare
  * @returns Distance value
  */
-export function compareDigests(a: number[], b: number[]): number {
-  return compareHexDigests(toHexString(a), toHexString(b));
-}
+export function compare(
+  a: string | number[],
+  b: string | number[]
+): number {
+  if (a instanceof Array) a = toHexString(a);
+  if (b instanceof Array) b = toHexString(b);
 
-/**
- * Compare two hex nilsimsa digests
- * @param a - The first digest to compare
- * @param b - The second digest to compare
- * @returns Distance value
- */
-export function compareHexDigests(a: string, b: string): number {
   let bits = 0;
   for (let i = 0; i <= 62; i += 2) {
     bits +=
